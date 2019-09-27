@@ -27,7 +27,7 @@ double deltaT( struct timeval *tv1, struct timeval *tv2)
 
 void usage() 
 {
-    printf("%s [-B:M:] file-name\n", "file_read");
+    printf("%s [-B:M: -o outfile] file-name\n", "file_read");
     exit(1);
 }
 
