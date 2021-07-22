@@ -39,9 +39,9 @@ now=`date '+%s'`
 
 for i in `seq 1 $njobs`; do
     logfile=$OUTDIR/dctest.out.$i
-#    python $DCTESTDIR/dctest3.py $rndseek -s $start -e $end -l $FILELIST > $logfile &
+#    python3 $DCTESTDIR/dctest3.py $rndseek -s $start -e $end -l $FILELIST > $logfile &
 # also write
-    python $DCTESTDIR/dctest3.py $rndseek -s $start -e $end -o 1 -l $FILELIST > $logfile &
+    python3 $DCTESTDIR/dctest3.py $rndseek -s $start -e $end -o 1 -l $FILELIST > $logfile &
 done
 
 (( wt = 40 + runtime )) 
