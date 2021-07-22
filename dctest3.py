@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 import sys, subprocess, os, random, time, optparse
 
@@ -38,7 +38,7 @@ print ("Executing : ", dc_cmd_base)
 try:
     flist = open(options.filelist).readlines()
 except:
-    print "Error: problems with filelist: ", options.filelist
+    print ("Error: problems with filelist: ", options.filelist)
     sys.exit(2)
 
 # wait for start-time
