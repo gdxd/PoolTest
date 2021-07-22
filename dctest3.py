@@ -71,14 +71,14 @@ while True:
             stop = True
             break
 
-	dowrite = output > 0 and random.random() > options.fracout
-	# construct random output file
-	if dowrite :
-	    odir = random.choice(dirs)
-	    ofile = "%s/out.%d" % (odir, random.randint(0,100000000))
-	    dc_cmd = dc_cmd_base  + " -o " + ofile + " "
-	else:
-	    dc_cmd = dc_cmd_base
+        dowrite = output > 0 and random.random() > options.fracout
+        # construct random output file
+        if dowrite :
+            odir = random.choice(dirs)
+            ofile = "%s/out.%d" % (odir, random.randint(0,100000000))
+            dc_cmd = dc_cmd_base  + " -o " + ofile + " "
+        else:
+            dc_cmd = dc_cmd_base
 
         print ("Executing %s %s " % ( dc_cmd, f ))
         
@@ -87,12 +87,12 @@ while True:
 #        print rc1, out1
         
         if rc1 == 0 :
-	    if dowrite : os.remove(ofile)
+            if dowrite : os.remove(ofile)
             sl=out1.split()
             #Versuche aus der Ausgabe die angesprochene Pool-Node zu isolieren
             try:
                 readbytes=int(sl[0])
-		writebytes = int(sl[1])
+                writebytes = int(sl[1])
                 readtime=float(sl[2])
                 readfile=sl[-1]
                                         
