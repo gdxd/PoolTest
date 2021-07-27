@@ -25,9 +25,20 @@ double deltaT( struct timeval *tv1, struct timeval *tv2)
   return dt;
 }
 
+double gaus_rnd() 
+{
+  /* simple gauss approx with sum of 12 rands */
+  int i; 
+  double r = 0;
+  for ( i=0; i<12; i++ ) {
+    r += (((double) random() )/ RAND_MAX) - 0.5 ;
+  }
+  return r ;
+}
+
 void usage() 
 {
-    printf("%s [-B:M: -o outfile] file-name\n", "file_read");
+    printf("%s [-B:M:f: -o outfile] file-name\n", "file_read");
     exit(1);
 }
 
@@ -57,11 +68,18 @@ int main( int argc, char** argv )
   struct timeval tvs, tv, tvnow;
   struct timezone tz;
 
+  /* for random access read */
+  double skip_fraction = 0., frnd;
+  struct stat fsb;
+  off_t fsize = 0, sret = 0;
+
+
+  
   const size_t flenmx = 200;
   char ofile[flenmx];
   ofile[0]='\0';
   
-  while( (c = getopt(argc, argv, "Do:hB:M:?")) != EOF) {
+  while( (c = getopt(argc, argv, "Do:hB:M:f:?")) != EOF) {
 	
     switch(c) {
     case 'D' :
@@ -78,6 +96,12 @@ int main( int argc, char** argv )
       output = 1;
       strncpy(ofile,optarg,flenmx);
       break;
+    case 'f':
+        skip_fraction = atof(optarg);
+        if ( skip_fraction < 1. ) {
+          skip_fraction = 1./(1.-skip_fraction);
+        }  
+        break;
 
     case 'h':
     case '?':
@@ -117,7 +141,14 @@ int main( int argc, char** argv )
     }
   }
 
-  
+  if ( skip_fraction > 0 ) {
+    fstat( fd, &fsb );
+    fsize = fsb.st_size;
+    if ( debug ) {
+      printf ( "Filesize %ld  %s\n", fsize, file );
+    }
+  }
+
 
   
   int nit = 0;
@@ -136,6 +167,24 @@ int main( int argc, char** argv )
     if ( nin < bufsize || (maxread > 0 && ntot > maxread) ) {
       break;
     }
+
+    if ( skip_fraction > 0 ) {
+      /* current pos */
+      sret = lseek( fd, (off_t) 0, SEEK_CUR );
+      frnd = bufsize * skip_fraction * (2. + gaus_rnd() );
+
+      if ( sret + frnd < 0 ) frnd = 0;
+
+      sret = lseek( fd, sret + frnd, SEEK_SET );
+      if ( debug ) printf("lseek set to %ld\n", sret );
+
+      if ( sret >= fsize ) {
+          break;
+      }
+    }
+
+
+    
   }
 
 
