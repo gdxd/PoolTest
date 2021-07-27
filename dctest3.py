@@ -21,7 +21,7 @@ parser.add_option('-e', '--end', default=0, type='int', help='end-time')
 parser.add_option('-o', '--output', default=0, type='int', help='write output file') 
 parser.add_option('-f', '--fracout', default=0.5, type='float', help='fraction to write output file')
 
-# parser.add_option('-r', '--rndseek', default=0, type='int', help='random seek read')
+parser.add_option('-r', '--rndseek', default=0, type='int', help='random seek read')
 
 
 options,arguments = parser.parse_args()
@@ -29,8 +29,10 @@ options,arguments = parser.parse_args()
 
 output = options.output
 
-
-dc_cmd_base = dcdir + "/file_read -M 1000  "
+if options.rndseek>0:
+    dc_cmd_base = dcdir + "/file_read -M 200 -B 50000 -f 5  " # random acces read 50 k Blocks, 1/5th of total vol, 200 M tot
+else:
+    dc_cmd_base = dcdir + "/file_read -M 1000 -B 1000000  "   # seq read, 1M blocks, 1 G tot
 
 
 print ("Executing : ", dc_cmd_base)

@@ -1,10 +1,10 @@
 #
 # on lcg-lrz-xcache2
 #
-infile=/mnt/a/ref/t.root
+infile=/mnt/ref/t.root
 rdir=/mnt
-for ding in $rdir/a/*; do echo $ding; a=0; while [ $a -lt 10 ]; do dd bs=1M count=1200 if=$infile of=$ding/test.$a; let a=a+1; echo $a; done; done
-for ding in $rdir/b/*; do echo $ding; a=0; while [ $a -lt 10 ]; do dd bs=1M count=1200 if=$infile of=$ding/test.$a; let a=a+1; echo $a; done; done
+for ding in $rdir/a/*; do echo $ding; a=0; while [ $a -lt 30 ]; do dd bs=1M count=1200 if=$infile of=$ding/test.$a; let a=a+1; echo $a; done; done
+for ding in $rdir/b/*; do echo $ding; a=0; while [ $a -lt 30 ]; do dd bs=1M count=1200 if=$infile of=$ding/test.$a; let a=a+1; echo $a; done; done
 #
 # on lcg-lrz-dc63
 #

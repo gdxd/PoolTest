@@ -12,9 +12,9 @@ testname=$2
 runtime=180
 
 rndseek=""
-# if [ x$3 == "x-r" ]; then
-#    rndseek="-r 1"
-# fi
+if [ x$3 == "x-r" ]; then
+   rndseek="-r 1"
+fi
 
 #export DCTESTDIR=/root/dc_test
 export DCTESTDIR=/root/PoolTest
@@ -38,12 +38,14 @@ now=`date '+%s'`
 
 
 for i in `seq 1 $njobs`; do
+    echo 3 > /proc/sys/vm/drop_caches # clear fs cache
     logfile=$OUTDIR/dctest.out.$i
-#    python3 $DCTESTDIR/dctest3.py $rndseek -s $start -e $end -l $FILELIST > $logfile &
+    python3 $DCTESTDIR/dctest3.py $rndseek -s $start -e $end -l $FILELIST > $logfile &
 # also write
-    python3 $DCTESTDIR/dctest3.py $rndseek -s $start -e $end -o 1 -l $FILELIST > $logfile &
+#    python3 $DCTESTDIR/dctest3.py $rndseek -s $start -e $end -o 1 -l $FILELIST > $logfile &
 done
 
 (( wt = 40 + runtime )) 
 
 sleep $wt
+
