@@ -73,6 +73,10 @@ int main( int argc, char** argv )
   struct stat fsb;
   off_t fsize = 0, sret = 0;
 
+  /* rnd gen seed */
+  unsigned int seed;
+  seed = getpid();
+  srandom(seed);
 
   
   const size_t flenmx = 200;
